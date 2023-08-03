@@ -26,4 +26,5 @@ public class UserEntity {
     private LocalDateTime modified;
     private LocalDateTime lastLogin;
     private boolean isActive;
+    private String token;
 }

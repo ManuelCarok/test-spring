@@ -4,6 +4,7 @@ import com.test.api.entities.UserEntity;
 import com.test.api.models.Message;
 import com.test.api.models.User;
 import com.test.api.repositories.UserRepository;
+import com.test.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +19,11 @@ import java.time.LocalDateTime;
 @RequestMapping("/api")
 public class ApiController {
 
-    private final UserRepository userRepository;
+    private final UserService userService;
 
     @Autowired
-    public ApiController(UserRepository userRepository) {
-        this.userRepository = userRepository;
+    public ApiController(UserService userService) {
+        this.userService = userService;
     }
 
     @GetMapping("/")
@@ -38,19 +39,11 @@ public class ApiController {
             return new ResponseEntity<>(new Message(errorMessage), HttpStatus.BAD_REQUEST);
         }
 
-        LocalDateTime now = LocalDateTime.now();
+        if(userService.existsByEmail(user.getEmail())) {
+            return new ResponseEntity<>(new Message("El correo ya registrado"), HttpStatus.BAD_REQUEST);
+        }
 
-        UserEntity userEntity = new UserEntity();
-        userEntity.setName(user.getName());
-        userEntity.setEmail(user.getEmail());
-        userEntity.setPassword(user.getPassword());
-        userEntity.setPhones("");
-        userEntity.setCreated(now);
-        userEntity.setModified(now);
-        userEntity.setLastLogin(now);
-        userEntity.setActive(true);
-
-        userRepository.save(userEntity);
+        UserEntity userEntity = userService.saveUser(user);
 
         return new ResponseEntity<>(new Message(""), HttpStatus.OK);
     }
