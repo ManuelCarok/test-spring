@@ -3,6 +3,7 @@ package com.test.api.controller;
 import com.test.api.entities.UserEntity;
 import com.test.api.models.Message;
 import com.test.api.models.User;
+import com.test.api.models.UserResponse;
 import com.test.api.repositories.UserRepository;
 import com.test.api.services.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,6 +46,14 @@ public class ApiController {
 
         UserEntity userEntity = userService.saveUser(user);
 
-        return new ResponseEntity<>(new Message(""), HttpStatus.OK);
+        UserResponse userResponse = new UserResponse();
+        userResponse.setId(userEntity.getId());
+        userResponse.setCreated(userEntity.getCreated());
+        userResponse.setModified(userEntity.getModified());
+        userResponse.setLast_login(userEntity.getLastLogin());
+        userResponse.setToken("");
+        userResponse.setIsactive(userEntity.isActive());
+
+        return new ResponseEntity<>(userResponse, HttpStatus.OK);
     }
 }
