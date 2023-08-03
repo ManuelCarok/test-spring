@@ -1,13 +1,10 @@
 package com.test.api.models;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+@NoArgsConstructor
+@Data
+@AllArgsConstructor
 public class Message {
-    @Getter @Setter
     private String message;
-
-    public Message(String message) {
-        this.message = message;
-    }
 }

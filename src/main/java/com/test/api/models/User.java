@@ -1,23 +1,18 @@
 package com.test.api.models;
 
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
+import javax.validation.constraints.Pattern;
+
+@NoArgsConstructor
+@Data
+@AllArgsConstructor
 public class User {
-    @Getter @Setter
-    private String message;
-    @Getter @Setter
+    private String name;
+    @Pattern(regexp = "^[A-Za-z0-9._%+-]+@([A-Za-z0-9.-]+\\.[A-Za-z]{2,3})$", message = "El formato de correo es inválido")
     private String email;
-    @Getter @Setter
+    @Pattern(regexp = "^[A-Z][a-z]*[0-9]{2}$", message = "El formato de password es inválido")
     private String password;
-    @Getter @Setter
     private Phone[] phones;
-
-    public User(String message, String email, String password, Phone[] phones) {
-        this.message = message;
-        this.email = email;
-        this.password = password;
-        this.phones = phones;
-    }
 }
 
